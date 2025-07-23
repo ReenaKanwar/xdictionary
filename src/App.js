@@ -10,18 +10,29 @@ function App() {
   ]);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState("");
 
   const handleSearch = () => {
+    if (!searchTerm.trim()) {
+      setResult("Word not found in the dictionary.");
+      return;
+    }
+
     const found = dictionary.find(
       entry => entry.word.toLowerCase() === searchTerm.trim().toLowerCase()
     );
-    setResult(found ? found.meaning : "Word not found in the dictionary.");
+
+    if (found) {
+      setResult(found.meaning);
+    } else {
+      setResult("Word not found in the dictionary.");
+    }
   };
 
   return (
     <div className="app">
-      <h1 className="title">XDictionary</h1>
+      <h1 className="title">Dictionary App</h1>
+
       <div className="search-container">
         <input
           type="text"
@@ -36,14 +47,8 @@ function App() {
       </div>
 
       <div className="result-container">
-        {result && result !== "Word not found in the dictionary." ? (
-          <>
-            <h3>Definition:</h3>
-            <p>{result}</p>
-          </>
-        ) : result === "Word not found in the dictionary." ? (
-          <p>{result}</p>
-        ) : null}
+        <h3>Definition:</h3>
+        <p>{result}</p>
       </div>
     </div>
   );
